@@ -68,6 +68,29 @@ def singleByteXOR(hexStr):
             maxScore = score
             bestResult = binascii.unhexlify(XORed)
 
-    print(bestResult)
-    return bestResult
+    return (maxScore, bestResult)
         
+
+def detectSingleByteXOR():
+    maxScore = 0
+    bestResult = ''
+    with open('4.txt', 'r') as inFile:
+        for line in inFile:
+            # this check should probably be elsewhere
+            if len(line) % 2 == 1:
+                continue
+            score, result = singleByteXOR(line)
+            if score > maxScore:
+                bestResult = result
+
+def repeatingKeyXOR(toEncode, key):
+    length = len(toEncode)
+    # need each letter to be repeated, not the entire list
+    keyList = [hex(i).split('x')[-1] for i in key]
+    repeatedKeyList = (keyList * (length // len(keyList) + 1))[:length]
+    repeatedKeyStr = ''.join(repeatedKeyList)
+
+    # only works if the text is ascii
+    hexEncoded = binascii.hexlify(toEncode)
+    return fixedXOR(hexEncoded, repeatedKeyStr)
+
