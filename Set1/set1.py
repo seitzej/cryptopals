@@ -83,14 +83,7 @@ def detectSingleByteXOR():
             if score > maxScore:
                 bestResult = result
 
-def repeatingKeyXOR(toEncode, key):
-    length = len(toEncode)
-    # need each letter to be repeated, not the entire list
-    keyList = [hex(i).split('x')[-1] for i in key]
-    repeatedKeyList = (keyList * (length // len(keyList) + 1))[:length]
-    repeatedKeyStr = ''.join(repeatedKeyList)
-
-    # only works if the text is ascii
-    hexEncoded = binascii.hexlify(toEncode)
-    return fixedXOR(hexEncoded, repeatedKeyStr)
-
+def repeatingKeyXOR(plainText, key):
+    keyLen = len(key)
+    XORed = bytes(b ^ key[i % keyLen] for (i, b) in enumerate(plainText))
+    return binascii.hexlify(XORed).decode('ascii')
