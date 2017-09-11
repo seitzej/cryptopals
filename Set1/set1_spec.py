@@ -41,5 +41,12 @@ I go crazy when I hear a cymbal'''
         actual = set1.repeatingKeyXOR(test, b'ICE')
         self.assertEqual(actual, expected)
 
+    def test_hammingDistance(self):
+        str1 = b'this is a test'
+        str2 = b'wokka wokka!!!'
+        expected = 37
+        actual = set1.hammingDistance(str1, str2)
+        print('HAMMING', actual)
+
 if __name__ == '__main__':
     unittest.main()

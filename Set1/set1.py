@@ -2,6 +2,7 @@
 import binascii
 import base64
 import string
+import bitarray
 from constants import freqs
 
 
@@ -70,7 +71,7 @@ def singleByteXOR(hexStr):
 
     return (maxScore, bestResult)
         
-
+# 4) Detecting single byte XORed
 def detectSingleByteXOR():
     maxScore = 0
     bestResult = ''
@@ -83,7 +84,27 @@ def detectSingleByteXOR():
             if score > maxScore:
                 bestResult = result
 
+# 5) Repeating Key XOR 
 def repeatingKeyXOR(plainText, key):
     keyLen = len(key)
     XORed = bytes(b ^ key[i % keyLen] for (i, b) in enumerate(plainText))
     return binascii.hexlify(XORed).decode('ascii')
+
+# 6) Breaking repeating key XOR
+
+# Hamming needs to operate on bits, not strings or bytes
+def hammingDistance(str1, str2):
+    diff = 0
+    bits1 = bitarray.bitarray()
+    bits2 = bitarray.bitarray()
+    bits1.frombytes(str1)
+    bits2.frombytes(str2)
+
+    for i in range(len(bits1)):
+        if (bits1[i] != bits2[i]):
+            diff += 1
+    return diff
+
+
+def breakRepeatingKeyXOR():
+    return False
